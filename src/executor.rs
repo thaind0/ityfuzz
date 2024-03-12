@@ -47,7 +47,7 @@ impl<VS, Addr, Code, By, Loc, SlotTy, Out, I, S, OT, CI> UsesState
     for FuzzExecutor<VS, Addr, Code, By, Loc, SlotTy, Out, I, S, OT, CI>
 where
     I: VMInputT<VS, Loc, Addr, CI>,
-    S: UsesInput<Input = I>,
+    S: UsesInput<Input = I> + State,
     OT: ObserversTuple<S>,
     VS: Default + VMStateT,
     Addr: Serialize + DeserializeOwned + Debug + Clone,
@@ -61,7 +61,7 @@ impl<VS, Addr, Code, By, Loc, SlotTy, Out, I, S, OT, CI> UsesObservers
     for FuzzExecutor<VS, Addr, Code, By, Loc, SlotTy, Out, I, S, OT, CI>
 where
     I: VMInputT<VS, Loc, Addr, CI>,
-    S: UsesInput<Input = I>,
+    S: UsesInput<Input = I> + State,
     OT: ObserversTuple<S>,
     VS: Default + VMStateT,
     Addr: Serialize + DeserializeOwned + Debug + Clone,
@@ -76,7 +76,7 @@ impl<VS, Addr, Code, By, Loc, SlotTy, Out, I, S, OT, CI> Debug
 where
     I: VMInputT<VS, Loc, Addr, CI>,
     S: UsesInput<Input = I>,
-    OT: ObserversTuple<S>,
+    OT: ObserversTuple<S> + Debug,
     VS: Default + VMStateT,
     Addr: Serialize + DeserializeOwned + Debug + Clone,
     Loc: Serialize + DeserializeOwned + Debug + Clone,
@@ -150,7 +150,7 @@ impl<VS, Addr, Code, By, Loc, SlotTy, Out, I, S, OT, CI> HasObservers
     for FuzzExecutor<VS, Addr, Code, By, Loc, SlotTy, Out, I, S, OT, CI>
 where
     I: VMInputT<VS, Loc, Addr, CI>,
-    S: UsesInput<Input = I>,
+    S: UsesInput<Input = I> + State,
     OT: ObserversTuple<S>,
     VS: Default + VMStateT,
     Addr: Serialize + DeserializeOwned + Debug + Clone,

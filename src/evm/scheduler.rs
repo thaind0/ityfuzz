@@ -2,11 +2,11 @@ use std::{collections::HashMap, fmt::Debug, marker::PhantomData};
 
 /// Corpus schedulers for ItyFuzz
 /// Used to determine which input / VMState to fuzz next
-use libafl::corpus::Corpus;
 use libafl::{
-    corpus::Testcase,
+    corpus::{Corpus, Testcase},
     prelude::{CorpusId, HasMetadata, HasTestcase, UsesInput},
     schedulers::{RemovableScheduler, Scheduler},
+    state::State,
     state::{HasCorpus, UsesState},
     Error,
 };
@@ -200,14 +200,14 @@ impl<S> PowerABIScheduler<S> {
 
 impl<S> UsesState for PowerABIScheduler<S>
 where
-    S: UsesInput,
+    S: UsesInput + State,
 {
     type State = S;
 }
 
 impl<S> Scheduler for PowerABIScheduler<S>
 where
-    S: HasCorpus<Input = EVMInput> + HasTestcase + HasMetadata,
+    S: HasCorpus<Input = EVMInput> + HasTestcase + HasMetadata + State,
 {
     fn on_add(&mut self, state: &mut Self::State, idx: CorpusId) -> Result<(), Error> {
         // adding power scheduling information based on code size
@@ -313,7 +313,7 @@ where
 
 impl<S> RemovableScheduler for PowerABIScheduler<S>
 where
-    S: HasCorpus<Input = EVMInput> + HasTestcase + HasMetadata,
+    S: HasCorpus<Input = EVMInput> + HasTestcase + HasMetadata + State,
 {
     fn on_remove(
         &mut self,
@@ -349,7 +349,7 @@ where
 
 impl<S> ABIScheduler for PowerABIScheduler<S>
 where
-    S: HasCorpus<Input = EVMInput> + HasTestcase + HasMetadata,
+    S: HasCorpus<Input = EVMInput> + HasTestcase + HasMetadata + State,
 {
     fn on_add_artifacts(
         &mut self,

@@ -6,8 +6,8 @@ use libafl::{
     executors::ExitKind,
     feedbacks::Feedback,
     inputs::Input,
-    prelude::{CorpusId, HasClientPerfMonitor, HasMetadata, ObserversTuple, Stage, UsesInput},
-    state::{HasCorpus, UsesState},
+    prelude::{CorpusId, HasMetadata, MaybeHasClientPerfMonitor, ObserversTuple, Stage, UsesInput},
+    state::{HasCorpus, State, UsesState},
     Error,
     Evaluator,
 };
@@ -224,7 +224,7 @@ impl<I, S, F> Feedback<S> for ConcolicFeedbackWrapper<F>
 where
     I: Input,
     F: Feedback<S> + Named + Debug,
-    S: HasClientPerfMonitor + HasMetadata + HasCorpus + UsesInput<Input = I>,
+    S: MaybeHasClientPerfMonitor + HasMetadata + HasCorpus + UsesInput<Input = I> + State,
 {
     fn is_interesting<EM, OT>(
         &mut self,
