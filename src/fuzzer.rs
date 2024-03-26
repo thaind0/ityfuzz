@@ -619,7 +619,7 @@ where
                 }
 
                 if !unsafe { RUN_FOREVER } {
-                    exit(0);
+                    return Err(Error::ShuttingDown);
                 }
 
                 return Ok((res, None));
